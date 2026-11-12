@@ -82,6 +82,7 @@
   const marcar = () => {
     try {
       document.querySelectorAll('.tcard[data-id]').forEach(b => {
+        if (b.dataset.id === 'psicosocial') { b.style.display = 'none'; return; }   // a JGL no le aplica
         const e = window.jglEstado(b.dataset.id); b.classList.toggle('jglLock', e === 'no' || e === 'fin'); b.classList.toggle('jglProg', e === 'prog');
         let g = b.querySelector('.jglTag'); if (e === 'ok') { if (g) g.remove(); return; }
         if (!g) { g = document.createElement('span'); g.className = 'jglTag'; b.appendChild(g); }
