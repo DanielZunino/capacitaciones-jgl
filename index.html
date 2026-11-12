@@ -7654,8 +7654,8 @@ const ORDEN_CC = ['induccion', 'autocuidado', 'peligros', 'epp', 'orden', 'trans
   'electrico', 'caliente', 'izaje', 'maquinaria', 'camion_conduccion', 'pvd', 'oficina'];
 TOPICS.forEach(t => { if (!t.sec) t.sec = 'todos'; });
 TOPICS.sort((a, b) => ((ORDEN_CC.indexOf(a.id) + 1) || 99) - ((ORDEN_CC.indexOf(b.id) + 1) || 99));
-const RAZONES = { 'Juan Guillermo Lillo': '10.377.626-0' };
-const razonTxt = r => RAZONES[r] ? r + ' (RUT ' + RAZONES[r] + ')' : (r && !/^revisar/i.test(r) ? r : 'JUAN GUILLERMO LILLO (RUT 10.377.626-0)');
+const RAZONES = { 'CONSTRUCTORA JGL SPA': '77.889.568-4' };
+const razonTxt = r => RAZONES[r] ? r + ' (RUT ' + RAZONES[r] + ')' : (r && !/^revisar/i.test(r) ? r : 'CONSTRUCTORA JGL SPA (RUT 77.889.568-4)');
 function filasEmpresa(D, TM) {
   const f = [['Empresa', razonTxt(D.empresa)]];
   if (D.sucursal && !/^revisar/i.test(D.sucursal)) f.push(['Obra', D.sucursal]);
