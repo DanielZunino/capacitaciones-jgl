@@ -5675,7 +5675,35 @@ var IND_PUESTO = {
     ['pz_alt_arnes', ['pz_alt_arnes']], ['altura_herram', ['altura_herram']], ['herr_esmerilMal', ['herr_esmerilMal', 'herr_esmeril']], ['maq_loto', ['maq_loto', 'maq_suelto']],
     ['pz_cal_cilindros', ['pz_cal_cilindros']], ['incendios_extBien', ['incendios_extBien', 'jgl_combust']], ['pz_elec_lineas', ['pz_elec_lineas']], ['pz_izaje_mal', ['pz_izaje_mal']],
     ['pz_zanja_borde', ['pz_zanja_borde', 'quim_cc_cemento']], ['pz_senalero', ['pz_senalero']], ['emergencias_tipos', ['emergencias_tipos']], ['pz_trayecto', ['pz_trayecto']]];
-  const Q = G.map(([s, ks]) => { const vs = []; ks.forEach(k => { const b = B.find(x => x[0] === k); if (b) vs.push.apply(vs, b.slice(1)); }); return Object.assign({ s }, vs[0], { v: vs.slice(1) }); });
+  // imagen de cada versión, acorde a lo que pregunta (en el mismo orden de las versiones de cada grupo)
+  const IMG = [
+    ['ind_politica', 'pz_compromiso', 'pz_compromiso'],
+    ['pz_ley', 'pz_ley', 'pz_trayecto', 'pz_irl', 'pz_irl', 'pz_irl'],
+    ['pz_avisa', 'pz_avisa', 'emergencias_llamar', 'emergencias_llamar', 'emergencias_llamar', 'emergencias_llamar'],
+    ['pz_grave', 'pz_grave', 'pz_grave'],
+    ['pz_epp_ok', 'pz_epp_ok', 'pz_epp_ok'],
+    ['jgl_miper', 'protocolo', 'protocolo', 'pz_izaje_ok', 'pz_cal_permiso', 'protocolo'],
+    ['pz_orden_mal', 'pz_orden_mal', 'pz_orden_ok', 'pz_acopio', 'pz_orden_ok', 'pz_acopio'],
+    ['orden_trip', 'orden_trip', 'orden_trip', 'pz_obra', 'pz_obra', 'pz_epp_ok'],
+    ['c5ca_limites', 'c5ca_limites', 'c5ca_tecnica'],
+    ['tmert_intro', 'tmert_intro', 'tmert_intro', 'tmert_neutro', 'tmert_neutro', 'tmert_neutro'],
+    ['pz_epp_fonos', 'pz_epp_fonos', 'ruido_prexor', 'uv_ropa', 'uv_ropa', 'uv_ropa'],
+    ['karin_intro', 'karin_intro', 'karin_intro'],
+    ['pz_alt_arnes', 'pz_alt_arnes', 'pz_andamio_mal'],
+    ['altura_herram', 'altura_herram', 'pz_epp_barbiquejo'],
+    ['herr_esmerilMal', 'herr_desenchufar', 'herr_esmerilBien', 'herr_esmeril', 'herr_esmeril', 'herr_esmeril'],
+    ['maq_loto', 'pz_obra', 'maq_suelto', 'maq_suelto', 'maq_suelto', 'pz_epp_ok'],
+    ['pz_cal_cilindros', 'pz_cal_cilindros', 'pz_cal_vigia'],
+    ['incendios_extBien', 'pz_obra', 'cc6_inc_ext', 'pz_cal_cilindros', 'cc6_inc_ext', 'incendios_extBien'],
+    ['pz_elec_lineas', 'pz_elec_lineas', 'pz_elec_ext_ok'],
+    ['pz_izaje_mal', 'pz_izaje_ok', 'pz_izaje_ok'],
+    ['pz_servicios', 'pz_zanja_borde', 'pz_zanja_mal', 'quim_cc_cemento', 'quim_cc_cemento', 'quim_cc_cemento'],
+    ['pz_retro_ok', 'pz_senalero', 'pz_retro_ok'],
+    ['pz_izaje_ok', 'pz_obra', 'emergencias_tipos'],
+    ['pz_trayecto', 'pz_trayecto', 'pz_trayecto']];
+  const Q = G.map(([s, ks], gi) => { const vs = []; ks.forEach(k => { const b = B.find(x => x[0] === k); if (b) vs.push.apply(vs, b.slice(1)); });
+    const im = IMG[gi] || []; const ws = vs.map((x, j) => Object.assign({ s: im[j] || s }, x));
+    return Object.assign({}, ws[0], { v: ws.slice(1) }); });
   nuevoTema({ id: 'induccion', sec: 'todos', exig: 0.86, __i18: true, title: 'Inducción de Prevención de Riesgos (IRL)', thumb: 'pz_bienvenida', mins: 40, dur: 40, learn: L, quiz: Q }, {
     obj: 'Informar a la persona trabajadora, al ingresar a la obra, los riesgos laborales de JGL Construcciones y de su puesto, las medidas preventivas y el método de trabajo correcto, el uso del EPP, sus derechos y cómo actuar ante accidentes y emergencias. Vigencia de la inducción: 18 meses.',
     n: ['Ley 16.744: seguro contra accidentes del trabajo y enfermedades profesionales; art. 68: medidas de prevención y EPP sin costo.',
