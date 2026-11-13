@@ -5,7 +5,7 @@
 (function () {
   if (window.__jglPlan) return; window.__jglPlan = true;
   const $ = id => document.getElementById(id);
-  const PROG0 = [['induccion', '12-11-2026'], ['jgl_altura', '01-12-2026'], ['karin', '01-12-2026'], ['jgl_caliente', '01-02-2027'], ['jgl_izaje', '01-04-2027'], ['jgl_cargas', '01-06-2027']];
+  const PROG0 = [['induccion', '12-11-2026'], ['jgl_dif_miper', '12-11-2026'], ['jgl_epp', '12-11-2026'], ['jgl_riohs', '01-12-2026'], ['jgl_proc', '01-12-2026'], ['jgl_altura', '01-12-2026'], ['karin', '01-12-2026'], ['jgl_caliente', '01-02-2027'], ['jgl_izaje', '01-04-2027'], ['jgl_cargas', '01-06-2027']];
   const BASE = { tipo: 'PUNTUAL', vence: '', prog: PROG0.map(([id, desde]) => ({ id, desde })) };
   const MES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
   const fms = (f, fin) => { const m = String(f || '').match(/(\d{1,2})-(\d{1,2})-(\d{4})/); return m ? new Date(+m[3], +m[2] - 1, +m[1], fin ? 23 : 0, fin ? 59 : 0, 0).getTime() : 0; };
