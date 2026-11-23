@@ -6200,6 +6200,8 @@ function diplomaCanvas(o){
 }
 let _sig=null;
 function sigImg(){ return _sig; }
+// 23-11-2026: firma liviana (la planilla corta sobre ~49.000 caracteres)
+function sigData(){ if(!_sig) return ''; const W=Math.min(480,_sig.width), H=Math.round(_sig.height*W/_sig.width); const c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d'); x.drawImage(_sig,0,0,W,H); let s=c.toDataURL('image/png'); if(s.length<40000) return s; x.globalCompositeOperation='destination-over'; x.fillStyle='#fff'; x.fillRect(0,0,W,H); for(const q of [0.85,0.7,0.5,0.35]){ s=c.toDataURL('image/jpeg',q); if(s.length<40000) return s; } return s; }
 function captureSig(){ const c=document.createElement('canvas'); c.width=480; c.height=170; const x=c.getContext('2d'); x.drawImage(sig,0,0,c.width,c.height); _sig=c; }
 function buildPdf(cv, reg){
   const { jsPDF } = window.jspdf; const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
@@ -6241,7 +6243,7 @@ function send(){
   if(!SCRIPT_URL || SCRIPT_URL.indexOf('http')!==0){ $('sent').textContent=''; return; }
   const data = { codigo:st.code, nombre:st.name, rut:st.rut, tema_id:st.topic.id, tema:st.topic.title, nota:fmtN(st.nota), logro:Math.round(st.ok/st.topic.quiz.length*100),
     correctas:st.ok, total:st.topic.quiz.length, intentos:st.attempts, errores:st.errors.join(', '), tiempo_seg:Math.round((Date.now()-st.start)/1000),
-    duracion_min:durTema(st.topic), modalidad:st.modal||'presencial', dirige:st.dirige?st.dirige.nombre:'', dirige_cargo:st.dirige?st.dirige.cargo:'', empresa:st.persona?st.persona.empresa:'', sucursal:st.persona?st.persona.sucursal:'', tiempo_app_min:Math.max(1,Math.round((st.date-st.start)/60000)), horas: hhmm(new Date(st.start))+' a '+hhmm(st.date)+' h', firma: _sig ? _sig.toDataURL('image/png') : '', archivo:fileName(), diploma: st.pdf ? st.pdf.output('datauristring').split(',')[1] : '' };
+    duracion_min:durTema(st.topic), modalidad:st.modal||'presencial', dirige:st.dirige?st.dirige.nombre:'', dirige_cargo:st.dirige?st.dirige.cargo:'', empresa:st.persona?st.persona.empresa:'', sucursal:st.persona?st.persona.sucursal:'', tiempo_app_min:Math.max(1,Math.round((st.date-st.start)/60000)), horas: hhmm(new Date(st.start))+' a '+hhmm(st.date)+' h', firma: sigData(), archivo:fileName(), diploma: st.pdf ? st.pdf.output('datauristring').split(',')[1] : '' };
   $('sent').textContent='Registrando tu diploma…';
   fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)})
     .then(()=>{ $('sent').textContent='✔ Diploma registrado'; }).catch(()=>{ $('sent').textContent='No se pudo registrar. Avísale al relator.'; });
@@ -6438,7 +6440,7 @@ function ds44Cert() {
   guiar('¡Felicitaciones! Aquí está tu certificado del curso. Toca el botón amarillo para descargarlo en PDF.', 'bDl', 'DESCARGAR', '');
   try { st.pdf = ds44Pdf(cv, det, st.code); } catch (e) { st.pdf = null; }
   const data = { accion: 'ds44_cert', codigo: st.code, hash: st.hash, nombre: st.name, rut: st.rut, ini: D.ini, fin: D.fin, vence: D.vence, venceTs: D.venceTs,
-    mods: JSON.stringify(D.mods.map(m => ({ id: m.id, fecha: m.fecha, errores: m.errores, modalidad: m.modalidad || 'presencial', dirige: m.dirige || '' }))), firma: _sig ? _sig.toDataURL('image/png') : '', archivo: fileName(),
+    mods: JSON.stringify(D.mods.map(m => ({ id: m.id, fecha: m.fecha, errores: m.errores, modalidad: m.modalidad || 'presencial', dirige: m.dirige || '' }))), firma: sigData(), archivo: fileName(),
     pdf: st.pdf ? st.pdf.output('datauristring').split(',')[1] : '' };
   $('sent').textContent = 'Registrando tu certificado…';
   fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(data) })
