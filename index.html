@@ -175,6 +175,7 @@ body.conaviso .wrap { padding-bottom:250px; }
 #vozMenu .vmO b { display:block; font-size:16px; } #vozMenu .vmO span { color:var(--muted); font-size:13px; }
 #vozMenu .vmO.on { border-color:var(--yellow); } #vozMenu .vmN { color:var(--muted); font-size:11.5px; line-height:1.35; margin:2px 4px; }
 </style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,700;1,400&display=swap"><script>/* 25-11-2026: letra del diploma igual en todos los equipos (en celulares sin Georgia la J salia separada) */window.addEventListener('load',()=>{try{['bold 96px Gelasio','italic 42px Gelasio','40px Gelasio','bold 48px Gelasio','italic 36px Gelasio','bold 120px Gelasio'].forEach(f=>document.fonts.load(f));}catch(e){}});</script>
 </head>
 <body>
 <button class="mute" id="bMute" aria-label="Sonido">🔊</button>
@@ -6154,7 +6155,7 @@ function diplomaCanvas(o){
   o = o || { name:st.name, rut:st.rut, date:st.date, code:st.code, sig:sigImg(), titulo:'DIPLOMA', otorga:'Se otorga el presente diploma a', p1:'por haber aprobado con nota ', p2:fmtN(st.nota), p3:' la capacitación de seguridad', tema:st.topic.title,
     linea:`realizada el ${st.date.getDate()} de ${MESES[st.date.getMonth()]} de ${st.date.getFullYear()}`+(st.topic.id==='induccion'?`  ·  vigente hasta el ${dmy(new Date(st.date.getFullYear(), st.date.getMonth()+IND_MESES, st.date.getDate()))}`:''), sello:['APROBADO',fmtN(st.nota),'NOTA'], foot:'Código de verificación '+st.code+'  ·  '+dmy(st.date)+'  ·  Duración '+durTema(st.topic)+' min · '+Math.max(1,Math.round((st.date-st.start)/60000))+' min en plataforma', rol: textoModalidad(st).rolRelator };
   const Wd=2000, Ht=1414, cv=document.createElement('canvas'); cv.width=Wd; cv.height=Ht; const c=cv.getContext('2d');
-  const d=o.date, serif='Georgia, "Times New Roman", serif', sans='Arial, Helvetica, sans-serif';
+  const d=o.date, serif='Gelasio, Georgia, "Times New Roman", serif', sans='Arial, Helvetica, sans-serif';
   c.fillStyle='#FFFDF6'; c.fillRect(0,0,Wd,Ht);
   // marco
   c.fillStyle='#1F2328'; c.fillRect(0,0,Wd,34); c.fillRect(0,Ht-34,Wd,34); c.fillRect(0,0,34,Ht); c.fillRect(Wd-34,0,34,Ht);
