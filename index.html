@@ -176,7 +176,7 @@ body.conaviso .wrap { padding-bottom:250px; }
 #vozMenu .vmO.on { border-color:var(--yellow); } #vozMenu .vmN { color:var(--muted); font-size:11.5px; line-height:1.35; margin:2px 4px; }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,700;1,400&display=swap"><script>/* 25-11-2026: letra del diploma igual en todos los equipos (en celulares sin Georgia la J salia separada) */window.addEventListener('load',()=>{try{['bold 96px Gelasio','italic 42px Gelasio','40px Gelasio','bold 48px Gelasio','italic 36px Gelasio','bold 120px Gelasio'].forEach(f=>document.fonts.load(f));}catch(e){}});</script>
-</head>
+<script>window.NOMBRE_ORDEN_BASE="NA";</script><script src="nombre_pila.js?v=1"></script></head>
 <body>
 <button class="mute" id="bMute" aria-label="Sonido">🔊</button>
 <button class="inicio" id="bInicio">⌂ Inicio</button>
@@ -6293,7 +6293,7 @@ function ds44Estado() {
 function ds44Render() {
   const E = ds44Estado(); st.E = E;
   const min = DS44.modulos.filter(m => E.done[m.id]).reduce((a, m) => a + m.dur, 0);
-  let h = `<h2>Hola, ${st.name.split(' ')[0]}</h2>`;
+  let h = `<h2>Hola, ${nombrePila(st.name)}</h2>`;
   if (E.cert) {
     const renovar = E.cert.venceTs - Date.now() < DS44.ventanaDias * DAY;
     h += `<div class="vok"><b>✔ Tienes el curso DS 44 vigente</b>Certificado ${E.cert.codigo} · emitido el ${E.cert.fecha} · vigente hasta el <b style="display:inline;font-size:15px">${E.cert.vence}</b>.</div>
@@ -6314,7 +6314,7 @@ function ds44Render() {
   document.querySelectorAll('.mrow').forEach(b => b.onclick = () => ds44StartMod(DS44.modulos.find(m => m.id === b.dataset.id)));
   if ($('bDsCert')) $('bDsCert').onclick = ds44Sign;
   window.scrollTo(0, 0);
-  const nom = st.name.split(' ')[0];
+  const nom = nombrePila(st.name);
   if (E.n === DS44.modulos.length) guiar(`¡${nom}, completaste los seis módulos! Toca aquí para firmar y obtener tu certificado.`, 'bDsCert', 'CERTIFICADO', '');
   else { const pend = document.querySelector('.mrow:not(.ok)');
     guiar(E.n ? `Hola ${nom}. Llevas ${E.n} de 6 módulos. Elige el módulo que harás hoy con el relator.` : `Hola ${nom}. Este curso tiene seis módulos y tienes un mes para completarlos. Elige el módulo que harás hoy con el relator.`, pend, 'EMPIEZA AQUÍ', ''); }
@@ -6494,14 +6494,14 @@ function sesTitulo(s) { return s.mode === 'ds44' ? 'Curso DS 44 · Módulo ' + (
 function sesOfrecer(s) {
   const n = s.mode === 'ds44' ? ds44Learn(DS44.modulos.find(m => m.id === s.id)).length : TOPICS.find(t => t.id === s.id).learn.length;
   const donde = s.fase === 'quiz' ? 'en la evaluación (pregunta ' + (s.qi + 1) + ')' : 'en la tarjeta ' + (s.li + 1) + ' de ' + n;
-  $('zBody').innerHTML = `<h2>Hola, ${s.name.split(' ')[0]}</h2>
+  $('zBody').innerHTML = `<h2>Hola, ${nombrePila(s.name)}</h2>
     <div class="vok"><b>Tienes una capacitación a medias</b>${sesTitulo(s)}<br>Quedaste ${donde}.</div>
     <button class="btn" id="bSesSi">Continuar donde quedé</button>
     <button class="btn ghost" id="bSesNo">Empezar otra cosa</button>`;
   show('s-resume');
   $('bSesSi').onclick = () => sesRetomar(s);
   $('bSesNo').onclick = () => { sesBorrar(); location.href = location.pathname; };
-  VOZ.say('Hola ' + s.name.split(' ')[0] + '. Quedaste ' + donde + '. Toca continuar para seguir donde quedaste.', () => GUIA.at('bSesSi', 'CONTINUAR'));
+  VOZ.say('Hola ' + nombrePila(s.name) + '. Quedaste ' + donde + '. Toca continuar para seguir donde quedaste.', () => GUIA.at('bSesSi', 'CONTINUAR'));
 }
 async function sesRetomar(s) {
   Object.assign(st, { repaso: !!s.repaso, mode: s.mode, name: s.name, rut: s.rut, hash: s.hash, li: s.li, qi: s.qi, ok: s.ok, errors: s.errors || [], attempts: s.attempts || 1, start: s.start });
@@ -6541,7 +6541,7 @@ async function entrarTema() {
   $('zBody').innerHTML = '<p>Revisando tu registro…</p>'; show('s-resume');
   const ap = await temaAprobado();
   if (!ap) { st.repaso = false; return startLearn(); }
-  const nom = st.name.split(' ')[0];
+  const nom = nombrePila(st.name);
   $('zBody').innerHTML = `<h2>Hola, ${nom}</h2>
     <div class="vok"><b>✔ Ya aprobaste este tema</b>${st.topic.title}<br>Aprobado el ${ap.fecha} con nota ${ap.nota}. Tu diploma está registrado con el código ${ap.codigo}.</div>
     <a class="btn" id="bVerDip" style="text-align:center;text-decoration:none" href="${valUrl(ap.codigo)}">Ver mi diploma</a>
@@ -7702,7 +7702,7 @@ function esAntiguo() { return false; }   // Constructor no tiene diplomas de la 
 
 // ---- Mi ruta
 let RUTA = null;   // { persona, aprob: {tema_id: {nota, fecha}} }
-const primerNombre = n => String(n || '').trim().split(/\s+/)[0] || '';
+const primerNombre = n => nombrePila(n);
 function esMia(t) { const p = RUTA && RUTA.persona; if (!p) return false; return t.sec === 'todos' || p.secs.includes(t.sec) || (p.extra || []).includes(t.id); }
 const secMia = s => !!(RUTA && RUTA.persona && (s.id === 'todos' || RUTA.persona.secs.includes(s.id)));
 const abiertas = {};
